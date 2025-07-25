@@ -2,10 +2,8 @@ const db = require('./database');
 
 function insertChat(data) {
   const stmt = db.prepare(`
-    INSERT INTO chats (
-      id, chat_id, sender_name, phone_number, message,
-      attachment_id, timestamp, is_group, from_me
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+    INSERT INTO chats (id, chat_id, sender_name, phone_number, message, attachment_id, timestamp, is_group, from_me)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
   `);
   stmt.run(
     data.id,
@@ -19,3 +17,12 @@ function insertChat(data) {
     data.from_me || false
   );
 }
+
+function getRecentChats() {
+  const stmt = db.prepare(`
+    SELECT * FROM chats ORDER BY timestamp DESC LIMIT 20
+  `);
+  return stmt.all();
+}
+
+module.exports = { insertChat, getRecentChats };
