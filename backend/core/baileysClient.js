@@ -1,6 +1,7 @@
 const { default: makeWASocket, useMultiFileAuthState, DisconnectReason } = require('baileys');
 const { Boom } = require('@hapi/boom');
-const QRCode = require('qrcode'); // <-- Tambahkan baris ini
+// const QRCode = require('qrcode'); // <-- Tambahkan baris ini
+const { renderUnicodeCompact } = require('uqr');
 
 async function createBaileysClient() {
   // Ambil state dan fungsi simpan kredensial
@@ -19,8 +20,9 @@ async function createBaileysClient() {
   sock.ev.on('connection.update', async (update) => {
     const { connection, lastDisconnect, qr } = update;
     if (qr) {
-      const qrString = await QRCode.toString(qr, { type: 'terminal' });
-      console.log(qrString);
+      // const qrString = await QRCode.toString(qr, { type: 'terminal' });
+      // console.log(qrString);
+      console.log(renderUnicodeCompact(qr));
     }
     if (connection === 'close') {
       const statusCode = (lastDisconnect?.error instanceof Boom)
