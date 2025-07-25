@@ -1,0 +1,2 @@
+# skip .sql file in folder database
+/db/database.db
